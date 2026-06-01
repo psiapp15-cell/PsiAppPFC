@@ -1,0 +1,121 @@
+PSIAPP - RELATORIO DE TESTES
+Trabalho de Eng. Software - 7o periodo
+Data: 31/05/2026
+Grupo: PsiApp
+
+----------------------------------------
+RESUMO
+----------------------------------------
+Rodei a suite completa no dia 31/05.
+
+  Total .......... 51 testes
+  Passou ......... 51
+  Falhou ......... 0
+
+  Frontend: 23 testes (7 arquivos)
+  Backend : 28 testes (6 arquivos) — API NestJS
+
+Build: frontend (vite+tsc) e backend (nest build) OK.
+
+----------------------------------------
+COMO RODAR
+----------------------------------------
+Na raiz:
+  npm run test:all
+
+So frontend:
+  cd frontend && npm run test:run
+
+So backend:
+  cd backend && npm run test:run
+
+Obs: nao usei banco real (Neon). Nos testes de service do back
+mockamos o Prisma. Testes HTTP usam app Nest (bootstrap.ts).
+
+----------------------------------------
+FRONTEND - O QUE TESTEI
+----------------------------------------
+
+authStore.test.ts
+  - login paciente / psicologo
+  - logout limpa sessao
+  - login no modo mock (signIn)
+
+Login.test.tsx
+  - campos aparecem
+  - login fake funciona
+  - troca de perfil
+
+Register.test.tsx
+  - formulario de cadastro
+
+PatientSearch.test.tsx
+  - filtros de busca existem
+  - nao tem filtro por genero/raca/etc
+
+PsychologistRecord.test.tsx
+  - tela avisa que prontuario ta bloqueado
+  - mostra requisitos de seguranca
+  - nao mostra dado clinico
+
+psychologistService.test.ts
+  - lista e filtra psicologos
+  - busca por id e erro se nao achar
+
+appointmentService.test.ts
+  - consulta nova fica PENDENTE
+  - aceitar -> CONFIRMADA
+  - recusar -> RECUSADA
+  - cancelar -> CANCELADA
+  - nao aceita duas vezes
+
+----------------------------------------
+BACKEND (NESTJS) - O QUE TESTEI
+----------------------------------------
+
+health.test.ts
+  - GET /health retorna 200 e status ativo
+
+auth.test.ts
+  - validacao zod (400 em body errado)
+  - /auth/me sem token -> 401
+
+refresh.test.ts
+  - refresh invalido -> 401
+  - refresh valido -> novos tokens (200)
+
+auth-service.test.ts (prisma mockado)
+  - register grava hash bcrypt
+  - email duplicado -> 409
+  - login ok / senha errada / user inexistente
+  - refresh ok / token ruim
+
+appointments-service.test.ts
+  - cancelar PENDENTE
+  - nao cancela REALIZADA
+  - 404 se nao existe
+
+security.test.ts
+  - rotas principais sem token -> 401
+
+----------------------------------------
+O QUE FALTA TESTAR (8o periodo)
+----------------------------------------
+- Fluxo com PostgreSQL (Neon) real
+- Login front -> API Nest -> Neon
+- E2E (Playwright)
+- Prontuario real (API ainda 501)
+- RBAC 403 com token de paciente em rota admin
+
+----------------------------------------
+CONCLUSAO
+----------------------------------------
+Os fluxos principais do MVP estao cobertos: login fake, busca,
+agendamento e protecao das rotas. Backend NestJS compila e
+responde nos testes HTTP. Tudo passou — base pronta para
+integrar o banco e fazer deploy.
+
+Ver tambem:
+  docs/plano-de-teste.md (testes manuais)
+  docs/testes-de-automacao.md (suite automatizada)
+  docs/arquitetura.md (stack atual)
