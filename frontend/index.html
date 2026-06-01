@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PsiApp</title>
+    <script>
+      (function () {
+        var path = window.location.pathname;
+        var role =
+          path.indexOf('/psychologist') === 0
+            ? 'psychologist'
+            : path.indexOf('/patient') === 0
+              ? 'patient'
+              : null;
+        if (!role) return;
+
+        var user =
+          role === 'psychologist'
+            ? {
+                id: 'p1',
+                name: 'Dra. Ana Costa',
+                email: 'ana.costa@email.com',
+                role: 'psychologist',
+                avatar:
+                  'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=faces',
+              }
+            : {
+                id: 'u1',
+                name: 'Camila Souza',
+                email: 'camila.souza@email.com',
+                role: 'patient',
+                avatar:
+                  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces',
+              };
+
+        localStorage.setItem(
+          'psiapp-auth',
+          JSON.stringify({ state: { user: user, isAuthenticated: true }, version: 0 })
+        );
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
