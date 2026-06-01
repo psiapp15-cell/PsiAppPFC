@@ -1,0 +1,16 @@
+{
+  "name": "psiapp",
+  "private": true,
+  "version": "0.1.0",
+  "description": "PsiApp — monorepo (frontend + backend).",
+  "scripts": {
+    "test:frontend": "npm --prefix frontend run test:run",
+    "test:backend": "npm --prefix backend run test:run",
+    "test:all": "npm run test:frontend && npm run test:backend",
+    "test:neon": "npm --prefix backend run test:neon",
+    "screenshots": "node scripts/capture-screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}
